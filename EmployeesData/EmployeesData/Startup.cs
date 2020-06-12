@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeesData.Models;
+using EmployeesData.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,7 @@ namespace EmployeesData
             {
                 options.UseSqlServer(Configuration.GetConnectionString("EmployeeDataDbConnection"));
             }, ServiceLifetime.Scoped);
+            services.AddScoped<IEmployee, EmployeeRepo>();
             services.AddControllersWithViews();
         }
 
