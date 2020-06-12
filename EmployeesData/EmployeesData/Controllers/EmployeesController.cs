@@ -118,6 +118,7 @@ namespace EmployeesData.Controllers
         public IActionResult Delete(int id)
         {
             _employee.DeleteEmployee(id);
+            _employeeSkill.DeleteRecord(id);
             return RedirectToAction(nameof(Index));
         }
     }

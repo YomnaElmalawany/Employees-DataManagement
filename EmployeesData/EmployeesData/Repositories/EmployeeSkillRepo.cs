@@ -31,5 +31,13 @@ namespace EmployeesData.Repositories
             }
             _employeeDataContext.SaveChanges();
         }
+
+        void DeleteRecord(int employeeId)
+        {
+            List<EmployeeSkill> employeeSkills = _employeeDataContext.EmployeeSkills.Where(q => q.EmployeeId == employeeId)
+                .ToList();
+            _employeeDataContext.EmployeeSkills.RemoveRange(employeeSkills);
+            _employeeDataContext.SaveChanges();
+        }
     }
 }
