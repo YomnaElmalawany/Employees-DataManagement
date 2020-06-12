@@ -13,10 +13,14 @@ namespace EmployeesData.Controllers
     public class EmployeesController : Controller
     {
         private readonly IEmployee _employee;
+        private readonly IEmployeeSkill _employeeSkill;
+        private readonly ISkill _skill;
 
-        public EmployeesController(IEmployee employee)
+        public EmployeesController(IEmployee employee, IEmployeeSkill employeeSkill, ISkill skill)
         {
             _employee = employee;
+            _employeeSkill = employeeSkill;
+            _skill = skill;
         }
 
         // GET: Employees
@@ -32,14 +36,21 @@ namespace EmployeesData.Controllers
 
         // POST: Employees/Create
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(CreateViewModel createViewModel)
         {
             if (ModelState.IsValid)
             {
-                _employee.AddEmpolyee(employee);
+                int employeeId =_employee.AddEmpolyee(createViewModel);
+                _employeeSkill.AddRecord(employeeId, createViewModel.Skills);
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+
+        //Get Skills
+        public List<Skill> Skills()
+        {
+            return _skill.GetSkills();
         }
 
         // GET: Employees/Edit/5

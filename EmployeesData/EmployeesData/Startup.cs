@@ -30,6 +30,8 @@ namespace EmployeesData
                 options.UseSqlServer(Configuration.GetConnectionString("EmployeeDataDbConnection"));
             }, ServiceLifetime.Scoped);
             services.AddScoped<IEmployee, EmployeeRepo>();
+            services.AddScoped<IEmployeeSkill, EmployeeSkillRepo>();
+            services.AddScoped<ISkill, SkillRepo>();
             services.AddControllersWithViews();
         }
 
