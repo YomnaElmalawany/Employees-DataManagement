@@ -17,5 +17,16 @@ namespace EmployeesData.Repositories
         {
             return _employeeDataContext.Skills.ToList();
         }
+        public List<Skill> GetSkillsByEmployeeId(int employeeId)
+        {
+            List<EmployeeSkill> employeeSkill = _employeeDataContext.EmployeeSkills.
+                Where(e => e.EmployeeId == employeeId).ToList();
+            List<Skill> skills = new List<Skill>();
+            foreach (var item in employeeSkill)
+            {
+                skills.Add(_employeeDataContext.Skills.FirstOrDefault(s => s.Id == item.SkillId));
+            }
+            return skills;
+        }
     }
 }
