@@ -66,12 +66,7 @@ namespace EmployeesData.Controllers
             {
                 return NotFound();
             }
-            EditViewModel editViewModel = new EditViewModel()
-            {
-                Employee = employee,
-                Skills = _skill.GetSkillsByEmployeeId((int)id)
-            };
-            return View(editViewModel);
+            return View(employee);
         }
 
         // POST: Employees/Edit/5

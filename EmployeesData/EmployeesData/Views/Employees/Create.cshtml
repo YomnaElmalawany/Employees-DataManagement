@@ -71,6 +71,7 @@
             var btn = $('<Button class="btn btn-primary mr-2 mb-2" type="button" id='+skill+'>' + skill +
                 '<span class="text-white" style="font-weight:bold""> x</span>' + '</Button>');
             $("#skillsDiv").append(btn);
+            terms.map((item) => $(`#terms`).click(function () { console.log("clicked") }))
         }
 
         $("#tags")
