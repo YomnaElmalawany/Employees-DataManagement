@@ -1,5 +1,5 @@
 # Employees-DataManagement
-A web form to manage employees’ basic information and their skills using .NET MVC &amp; Entity Framework.
+A web form to manage employees’ basic information and their skills using ASP.NET Core MVC &amp; Entity Framework.
 
 ### Used Packages
 - Entity Framework Core
