@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EmployeesData.Models;
+using EmployeesData.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +25,16 @@ namespace EmployeesData
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<EmployeeDataContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("EmployeeDataDbConnection"));
+            }, ServiceLifetime.Scoped);
+            services.AddScoped<IEmployee, EmployeeRepo>();
+            services.AddScoped<IEmployeeSkill, EmployeeSkillRepo>();
+            services.AddScoped<ISkill, SkillRepo>();
             services.AddControllersWithViews();
+
+            services.AddKendo();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

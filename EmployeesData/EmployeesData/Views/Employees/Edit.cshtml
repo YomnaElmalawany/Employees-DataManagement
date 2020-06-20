@@ -1,0 +1,58 @@
+﻿@model EmployeesData.Models.CreateEditViewModel
+@{
+    ViewData["Title"] = "Edit Employee";
+}
+
+<h4>Edit Employee</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Employee.Id" />
+            <div class="form-group">
+                <label asp-for="Employee.FullName" class="control-label"></label>
+                <input asp-for="Employee.FullName" class="form-control" />
+                <span asp-validation-for="Employee.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Employee.Email" class="control-label"></label>
+                <input asp-for="Employee.Email" class="form-control" />
+                <span asp-validation-for="Employee.Email" class="text-danger"></span>
+            </div>
+            <div class="demo-section k-content">
+                <label for="skills">Skills</label>
+                @(Html.Kendo().MultiSelectFor(m => m.SelectedSkillsList)
+              //.Name("required")
+              .Placeholder("Select skills...")
+              .DataValueField("Id")
+              .DataTextField("Name")
+              .BindTo(Model.SkillsList)
+              //.Value(new string[] { "ASP.NET", "iOS" })
+              )
+            </div>
+            <style>
+                .demo-section label {
+                    display: block;
+                    margin: 15px 0 5px 0;
+                }
+
+                #get {
+                    float: right;
+                    margin: 25px auto 0;
+                }
+            </style>
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
