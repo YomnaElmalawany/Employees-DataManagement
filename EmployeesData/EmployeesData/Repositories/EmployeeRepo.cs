@@ -13,13 +13,13 @@ namespace EmployeesData.Repositories
         {
             _employeeDataContext = employeeDataContext;
         }
-        public int AddEmpolyee(CreateViewModel createViewModel)
+        public int AddEmpolyee(CreateEditViewModel createEditViewModel)
         {
-            _employeeDataContext.Employees.Add(createViewModel.Employee);
+            _employeeDataContext.Employees.Add(createEditViewModel.Employee);
 
             _employeeDataContext.SaveChanges();
 
-            int id = createViewModel.Employee.Id;
+            int id = createEditViewModel.Employee.Id;
             return id;
         }
 

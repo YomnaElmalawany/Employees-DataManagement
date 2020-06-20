@@ -8,7 +8,7 @@ namespace EmployeesData.Repositories
 {
     public interface IEmployee
     {
-        int AddEmpolyee(CreateViewModel createViewModel);
+        int AddEmpolyee(CreateEditViewModel createEditViewModel);
         void DeleteEmployee(int employeeId);
         void EditEmployee(Employee employee);
         List<Employee> GetEmployees();

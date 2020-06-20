@@ -1,4 +1,4 @@
-﻿@model EmployeesData.Models.CreateViewModel
+﻿@model EmployeesData.Models.CreateEditViewModel
 @{
     ViewData["Title"] = "Add Employee";
 }
@@ -18,15 +18,59 @@
                 <input asp-for="@Model.Employee.Email" class="form-control" />
                 <span asp-validation-for="@Model.Employee.Email" class="text-danger"></span>
             </div>
-            <div class="form-group ui-widget">
+
+            <div class="demo-section k-content">
+                <label for="skills">Skills</label>
+                @(Html.Kendo().MultiSelectFor(m => m.SelectedSkillsList)
+              //.Name("required")
+              .Placeholder("Select skills...")
+              .DataValueField("Id")
+              .DataTextField("Name")
+              .BindTo(Model.SkillsList)
+        //.Value(new string[] { "ASP.NET", "iOS" })
+        )
+                @*<kendo-multiselect id="required" placeholder="Select skills..."
+                           v-model="@Model.SkillsList"
+                           :data-source="@Model.SkillsList"
+                           :data-text-field="'Name'"
+                           :data-value-field="'Id'"
+                           :delay="1000"
+                           :auto-bind="true"
+                           :min-length="2"
+                           :value-primitive="false">
+        </kendo-multiselect>*@
+
+
+                @*<button class="k-button" id="get">Send Invitation</button>*@
+            </div>
+            @*<script>
+                $(document).ready(function () {
+                    var required = $("#SelectedSkillsList").data("kendoMultiSelect");
+
+                    $("#get").click(function () {
+                        alert("Attendees:\n\nRequired: " + required.value());
+                    });
+                });
+            </script>*@
+            <style>
+                .demo-section label {
+                    display: block;
+                    margin: 15px 0 5px 0;
+                }
+
+                #get {
+                    float: right;
+                    margin: 25px auto 0;
+                }
+            </style>
+
+            @*<div class="form-group ui-widget">
                 <label for="tags" class="control-label">Skills</label> <br />
-                @*<textarea id="tags" class="form-control"></textarea>*@
-                @*<input id="tags"/>*@
-            </div>
-            <div id="skillsDiv" class="mb-5">
+            </div>*@
+            @*<div id="skillsDiv" class="mb-5">
                 <input id="tags" class="form-control mb-3" asp-for="@Model.Skills" />
-            </div>
-            <div class="form-group">
+            </div>*@
+            <div class="form-group mt-3">
                 <input type="submit" value="Add" class="btn btn-info" onclick="" />
             </div>
         </form>
@@ -40,74 +84,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-
-    $.noConflict();
-    jQuery(document).ready(function ($) {
-        var availableTags = [];
-        let terms = [];
-        // get skills list
-        $.ajax({
-            url: '@Url.Action("Skills","Employees")',
-            success: function (data) {
-                $.map(data, function (item) {
-                    availableTags.push(item['name'])
-                })
-            },
-            error: function (xhr, status, error) {
-                alert("Error: "+ error)
-            }
-        })
-        function split(val) {
-            return val.split(/,\s*/);
-        }
-        function extractLast(term) {
-            return split(term).pop();
-        }
-
-        function addSkill(skill) {
-            var btn = $('<Button class="btn btn-primary mr-2 mb-2" type="button" id='+skill+'>' + skill +
-                '<span class="text-white" style="font-weight:bold""> x</span>' + '</Button>');
-            $("#skillsDiv").append(btn);
-            terms.map((item) => $(`#terms`).click(function () { console.log("clicked") }))
-        }
-
-        $("#tags")
-            // don't navigate away from the field on tab when selecting an item
-            .on("keydown", function (event) {
-                console.log($.ui)
-                if (event.keyCode === $.ui.keyCode.TAB &&
-                    $(this).autocomplete("instance").menu.active) {
-                    event.preventDefault();
-                }
-            })
-            .autocomplete({
-                minLength: 0,
-                source: function (request, response) {
-                    // delegate back to autocomplete, but extract the last term
-                    response($.ui.autocomplete.filter(
-                        availableTags, extractLast(request.term)));
-                },
-                focus: function () {
-                    // prevent value inserted on focus
-                    return false;
-                },
-                select: function (event, ui) {
-                    terms = split(this.value);
-                    // remove the current input
-                    terms.pop();
-                    // add the selected item
-                    terms.push(ui.item.value);
-                    // add placeholder to get the comma at the end of each skill
-                    terms.push("");
-                    this.value = terms.join(",");
-                    console.log(ui.item.value)
-                    addSkill(ui.item.value);
-                    return false;
-                }
-            });
-
-    });
-</script>

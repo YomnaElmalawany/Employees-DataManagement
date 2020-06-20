@@ -31,17 +31,26 @@ namespace EmployeesData.Controllers
         // GET: Employees/Create
         public IActionResult Create()
         {
-            return View();
+            CreateEditViewModel createEditViewModel = new CreateEditViewModel();
+            //createEditViewModel.SelectedSkillsList = new int[2] { 1, 4 };
+            //createEditViewModel.SkillsList = new List<Skill>()
+            //{
+            //    new Skill(){ Name = "PHP" },
+            //    new Skill(){ Name = "ASP.NET" },
+            //    new Skill(){ Name = "Android" },
+            //    new Skill(){ Name = "iOS" }
+            //};
+            return View(createEditViewModel);
         }
 
         // POST: Employees/Create
         [HttpPost]
-        public IActionResult Create(CreateViewModel createViewModel)
+        public IActionResult Create(CreateEditViewModel createEditViewModel)
         {
             if (ModelState.IsValid)
             {
-                int employeeId =_employee.AddEmpolyee(createViewModel);
-                _employeeSkill.AddRecord(employeeId, createViewModel.Skills);
+                int employeeId =_employee.AddEmpolyee(createEditViewModel);
+                _employeeSkill.AddRecord(employeeId, createEditViewModel.SelectedSkillsList);
                 return RedirectToAction(nameof(Index));
             }
             return View();
@@ -66,23 +75,26 @@ namespace EmployeesData.Controllers
             {
                 return NotFound();
             }
-            return View(employee);
+            List<int> skillsIds = _employeeSkill.GetSkillsByEmployeeId((int)id);
+            CreateEditViewModel createEditViewModel = new CreateEditViewModel()
+            {
+                Employee = employee,
+                SelectedSkillsList = skillsIds
+            };
+            return View(createEditViewModel);
         }
 
         // POST: Employees/Edit/5
         [HttpPost]
-        public IActionResult Edit(int id, Employee employee)
+        public IActionResult Edit(CreateEditViewModel createEditViewModel)
         {
-            if (id != employee.Id)
-            {
-                return NotFound();
-            }
-
+            
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _employee.EditEmployee(employee);
+                    _employee.EditEmployee(createEditViewModel.Employee);
+                    _employeeSkill.EditRecord(createEditViewModel);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -93,7 +105,7 @@ namespace EmployeesData.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(employee);
+            return View(createEditViewModel);
         }
 
         // GET: Employees/Delete/5

@@ -33,6 +33,8 @@ namespace EmployeesData
             services.AddScoped<IEmployeeSkill, EmployeeSkillRepo>();
             services.AddScoped<ISkill, SkillRepo>();
             services.AddControllersWithViews();
+
+            services.AddKendo();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
