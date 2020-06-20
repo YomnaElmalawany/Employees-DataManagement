@@ -15,6 +15,8 @@ namespace EmployeesData.Repositories
         }
         public int AddEmpolyee(CreateEditViewModel createEditViewModel)
         {
+            createEditViewModel.Employee.FullName = createEditViewModel.Employee.FirstName + " " +
+                createEditViewModel.Employee.MiddleName + " " + createEditViewModel.Employee.LastName;
             _employeeDataContext.Employees.Add(createEditViewModel.Employee);
 
             _employeeDataContext.SaveChanges();
@@ -32,6 +34,7 @@ namespace EmployeesData.Repositories
 
         public void EditEmployee(Employee employee)
         {
+            employee.FullName = employee.FirstName + " " + employee.MiddleName + " " + employee.LastName;
             _employeeDataContext.Entry<Employee>(employee).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _employeeDataContext.SaveChanges();
         }
